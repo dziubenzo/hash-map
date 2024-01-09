@@ -16,5 +16,13 @@ class HashMap {
   }
 }
 
+class Node {
+  constructor(key, value) {
+    this.key = key;
+    this.value = value;
+    this.next = null;
+  }
+}
+
 const hashMap = new HashMap();
 console.log(hashMap.buckets);
