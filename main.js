@@ -3,15 +3,7 @@ class HashMap {
   #loadFactor = 0.75;
 
   constructor() {
-    this.buckets = this.generateBuckets();
-  }
-
-  generateBuckets() {
-    const array = [];
-    for (let i = 0; i < this.#capacity; i++) {
-      array.push(null);
-    }
-    return array;
+    this.buckets = [];
   }
 
   hash(value) {
