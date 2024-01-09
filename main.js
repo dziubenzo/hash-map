@@ -26,22 +26,9 @@ class HashMap {
   }
 
   set(key, value) {
-    // Insert at the end of the linked list or update existing node
-    const insertOrUpdateNode = (node, newNode) => {
-      while (node.next !== null) {
-        if (node.key === newNode.key) {
-          (node.value = newNode), value;
-          return;
-        }
-        node = node.next;
-      }
-      node.next = newNode;
-    };
-
     /* 
     TO DO: Check for whether the buckets need to be resized once length() and values() are implemented
     */
-
     const index = this.#getIndex(key);
     this.#checkLimitation(index);
     const node = new Node(key, value);
@@ -50,12 +37,32 @@ class HashMap {
       return (this.buckets[index] = node);
     }
     let firstNode = this.buckets[index];
-    // Update value if keys match
-    if (firstNode.key === node.key) {
-      firstNode.value = node.value;
-      return;
+    do {
+      // Update value is keys match
+      if (firstNode.key === node.key) {
+        firstNode.value = node.value;
+        return;
+      }
+      firstNode = firstNode.next;
+    } while (firstNode.next !== null);
+    // Add node to the tail of linked list
+    firstNode.next = newNode;
+  }
+
+  get(key) {
+    const index = this.#getIndex(key);
+    this.#checkLimitation(index);
+    if (this.buckets[index] === undefined) {
+      return null;
     }
-    insertOrUpdateNode(firstNode, node);
+    let firstNode = this.buckets[index];
+    do {
+      if (firstNode.key === key) {
+        return firstNode.value;
+      }
+      firstNode = firstNode.next;
+    } while (firstNode.next !== null);
+    return null;
   }
 }
 
@@ -68,10 +75,14 @@ class Node {
 }
 
 const hashMap = new HashMap();
+
 const value1 = 'Fragile';
 const key1 = hashMap.hash(value1);
 hashMap.set(key1, value1);
+
 const value2 = 'Fragile 2';
 const key2 = hashMap.hash(value2);
 hashMap.set(key2, value2);
+
 console.log(hashMap.buckets);
+console.log(hashMap.get(key2));
