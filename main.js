@@ -120,33 +120,45 @@ class HashMap {
   }
 
   clear() {
+    // Reset buckets size to 16
+    this.#capacity = 16;
     this.buckets = new Array(this.#capacity);
   }
 
   keys() {
-    let array = [];
+    const keys = [];
     for (let bucket of this.buckets) {
       if (bucket instanceof Node) {
         while (bucket !== null) {
-          array.push(bucket.key);
+          keys.push(bucket.key);
           bucket = bucket.next;
         }
       }
     }
-    return array;
+    return keys;
   }
 
   values() {
-    let array = [];
+    const values = [];
     for (let bucket of this.buckets) {
       if (bucket instanceof Node) {
         while (bucket !== null) {
-          array.push(bucket.value);
+          values.push(bucket.value);
           bucket = bucket.next;
         }
       }
     }
-    return array;
+    return values;
+  }
+
+  entries() {
+    const keys = this.keys();
+    const values = this.values();
+    const entries = [];
+    for (let i = 0; i < keys.length; i++) {
+      entries.push([keys[i], values[i]]);
+    }
+    return entries;
   }
 }
 
@@ -173,4 +185,4 @@ hashMap.set(21323232, 'Fragile 4');
 // hashMap.remove(213232);
 console.log(hashMap.buckets);
 console.log(hashMap.length());
-console.log(hashMap.values());
+console.log(hashMap.entries());
