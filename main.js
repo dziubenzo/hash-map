@@ -43,10 +43,14 @@ class HashMap {
         firstNode.value = node.value;
         return;
       }
-      firstNode = firstNode.next;
-    } while (firstNode.next !== null);
+      if (firstNode.next !== null) {
+        firstNode = firstNode.next;
+      } else {
+        break;
+      }
+    } while (true);
     // Add node to the tail of linked list
-    firstNode.next = newNode;
+    firstNode.next = node;
   }
 
   get(key) {
@@ -60,9 +64,20 @@ class HashMap {
       if (firstNode.key === key) {
         return firstNode.value;
       }
-      firstNode = firstNode.next;
-    } while (firstNode.next !== null);
+      if (firstNode.next !== null) {
+        firstNode = firstNode.next;
+      } else {
+        break;
+      }
+    } while (true);
     return null;
+  }
+
+  has(key) {
+    if (this.get(key)) {
+      return true;
+    }
+    return false;
   }
 }
 
@@ -84,5 +99,7 @@ const value2 = 'Fragile 2';
 const key2 = hashMap.hash(value2);
 hashMap.set(key2, value2);
 
+hashMap.set(213232, 'Fragile 3');
+console.log(hashMap.has(213232));
+hashMap.set(21323232, 'Fragile 4');
 console.log(hashMap.buckets);
-console.log(hashMap.get(key2));
