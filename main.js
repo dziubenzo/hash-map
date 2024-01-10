@@ -105,6 +105,19 @@ class HashMap {
       nextNode = nextNode.next || null;
     }
   }
+
+  length() {
+    let counter = 0;
+    for (let bucket of this.buckets) {
+      if (bucket instanceof Node) {
+        while (bucket !== null) {
+          counter++;
+          bucket = bucket.next;
+        }
+      }
+    }
+    return counter;
+  }
 }
 
 class Node {
@@ -130,3 +143,4 @@ console.log(hashMap.has(213232));
 hashMap.set(21323232, 'Fragile 4');
 // hashMap.remove(213232);
 console.log(hashMap.buckets);
+console.log(hashMap.length());
