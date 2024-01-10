@@ -118,6 +118,10 @@ class HashMap {
     }
     return counter;
   }
+
+  clear() {
+    this.buckets = new Array(this.#capacity);
+  }
 }
 
 class Node {
@@ -139,8 +143,8 @@ const key2 = hashMap.hash(value2);
 hashMap.set(key2, value2);
 
 hashMap.set(213232, 'Fragile 3');
-console.log(hashMap.has(213232));
 hashMap.set(21323232, 'Fragile 4');
 // hashMap.remove(213232);
 console.log(hashMap.buckets);
 console.log(hashMap.length());
+// hashMap.clear();
