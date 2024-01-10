@@ -135,6 +135,19 @@ class HashMap {
     }
     return array;
   }
+
+  values() {
+    let array = [];
+    for (let bucket of this.buckets) {
+      if (bucket instanceof Node) {
+        while (bucket !== null) {
+          array.push(bucket.value);
+          bucket = bucket.next;
+        }
+      }
+    }
+    return array;
+  }
 }
 
 class Node {
@@ -160,4 +173,4 @@ hashMap.set(21323232, 'Fragile 4');
 // hashMap.remove(213232);
 console.log(hashMap.buckets);
 console.log(hashMap.length());
-console.log(hashMap.keys());
+console.log(hashMap.values());
