@@ -16,6 +16,20 @@ class HashMap {
     }
   }
 
+  #getExpectedLoad() {
+    return (this.length() + 1) / this.#capacity;
+  }
+
+  #doubleBuckets() {
+    this.#capacity *= 2;
+    const values = this.values();
+    this.buckets = new Array(this.#capacity);
+    for (const value of values) {
+      const key = this.hash(value);
+      this.set(key, value);
+    }
+  }
+
   hash(value) {
     let key = 0;
     const primeNumber = 31;
@@ -26,9 +40,10 @@ class HashMap {
   }
 
   set(key, value) {
-    /* 
-    TO DO: Check for whether the buckets need to be resized once length() and values() are implemented
-    */
+    // Check load and double buckets if necessary
+    if (this.#getExpectedLoad() >= this.#loadFactor) {
+      this.#doubleBuckets();
+    }
     const index = this.#getIndex(key);
     this.#checkLimitation(index);
     const node = new Node(key, value);
@@ -170,19 +185,53 @@ class Node {
   }
 }
 
+// Values for tests
+
+const array11 = [
+  'Aberforth',
+  'Albus',
+  'Amos',
+  'Cedric',
+  'Colin',
+  'Dean',
+  'Draco',
+  'Dudley',
+  'Fred',
+  'George',
+  'Godric',
+];
+
+const array16 = array11.concat([
+  'Horace',
+  'Lucius',
+  'Neville',
+  'Percy',
+  'Remus',
+]);
+
+const array30 = array16.concat([
+  'Ronald',
+  'Seamus',
+  'Severus',
+  'Sirius',
+  'Vernon',
+  'Viktor',
+  'Bellatrix',
+  'Dolores',
+  'Ginny',
+  'Fleur',
+  'Hedwig',
+  'Hermione',
+  'Luna',
+  'Petunia',
+]);
+
 const hashMap = new HashMap();
 
-const value1 = 'Fragile';
-const key1 = hashMap.hash(value1);
-hashMap.set(key1, value1);
+for (const value of array30) {
+  const key = hashMap.hash(value);
+  hashMap.set(key, value);
+}
 
-const value2 = 'Fragile 2';
-const key2 = hashMap.hash(value2);
-hashMap.set(key2, value2);
-
-hashMap.set(213232, 'Fragile 3');
-hashMap.set(21323232, 'Fragile 4');
-// hashMap.remove(213232);
 console.log(hashMap.buckets);
-console.log(hashMap.length());
 console.log(hashMap.entries());
