@@ -79,6 +79,32 @@ class HashMap {
     }
     return false;
   }
+
+  remove(key) {
+    if (!this.has(key)) {
+      throw new Error('Key-value pair does not exist in hash map');
+    }
+    const index = this.#getIndex(key);
+    this.#checkLimitation(index);
+    // Handle case when key is the first node
+    if (this.buckets[index].key === key) {
+      if (this.buckets[index].next === null) {
+        return delete this.buckets[index];
+      } else {
+        return (this.buckets[index] = this.buckets[index].next);
+      }
+    }
+    // Handle case when key is somewhere else in linked list
+    let currentNode = this.buckets[index];
+    let nextNode = this.buckets[index].next;
+    while (true) {
+      if (nextNode.key === key) {
+        return (currentNode.next = currentNode.next.next || null);
+      }
+      currentNode = nextNode;
+      nextNode = nextNode.next || null;
+    }
+  }
 }
 
 class Node {
@@ -102,4 +128,5 @@ hashMap.set(key2, value2);
 hashMap.set(213232, 'Fragile 3');
 console.log(hashMap.has(213232));
 hashMap.set(21323232, 'Fragile 4');
+// hashMap.remove(213232);
 console.log(hashMap.buckets);
